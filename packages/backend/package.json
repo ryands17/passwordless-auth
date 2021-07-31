@@ -9,7 +9,8 @@
     "watch": "tsc -w",
     "test": "jest",
     "test:hook": "jest --onlyChanged",
-    "cdk": "dotenv -- cdk"
+    "cdk": "dotenv -- cdk",
+    "deploy": "yarn cdk deploy -O ../frontend/src/cdk-exports.json"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.116.0",
