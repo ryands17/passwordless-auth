@@ -1,16 +1,16 @@
 import './helpers'
+import { expect as expectCDK, haveOutput } from '@aws-cdk/assert'
 import { TemplateAssertions } from '@aws-cdk/assertions'
 import * as cdk from '@aws-cdk/core'
-import * as PasswordlessLogin from '../lib/passwordless-login-stack'
+import { PasswordlessLoginStack } from '../lib/passwordless-login-stack'
+
+const synthStack = () => {
+  const app = new cdk.App()
+  return new PasswordlessLoginStack(app, 'PasswordlessLogin')
+}
 
 test('Cognito User pool and Lambda functions are created', () => {
-  const app = new cdk.App()
-  const stack = new PasswordlessLogin.PasswordlessLoginStack(
-    app,
-    'PasswordlessLogin'
-  )
-
-  const assert = TemplateAssertions.fromStack(stack)
+  const assert = TemplateAssertions.fromStack(synthStack())
 
   assert.resourceCountIs('AWS::Lambda::Function', 6)
 
@@ -69,4 +69,10 @@ test('Cognito User pool and Lambda functions are created', () => {
     ExplicitAuthFlows: ['ALLOW_CUSTOM_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
     SupportedIdentityProviders: ['COGNITO'],
   })
+})
+
+test('Outputs are generated correctly', () => {
+  const stack = synthStack()
+  expectCDK(stack).to(haveOutput({ outputName: 'userPoolId' }))
+  expectCDK(stack).to(haveOutput({ outputName: 'clientId' }))
 })
