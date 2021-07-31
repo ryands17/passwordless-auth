@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn jest --onlyChanged && yarn lint-staged
+yarn test:hook && yarn lint-staged
