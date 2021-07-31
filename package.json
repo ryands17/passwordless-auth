@@ -1,6 +1,10 @@
 {
   "name": "passwordless-login",
   "version": "0.1.0",
+  "author": {
+    "name": "Ryan Dsouza"
+  },
+  "license": "ISC",
   "bin": {
     "passwordless-login": "bin/passwordless-login.js"
   },
@@ -8,13 +12,18 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "dotenv -- cdk"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.116.0",
+    "@aws-cdk/assertions": "1.116.0",
+    "@types/aws-lambda": "8.10.81",
     "@types/jest": "^26.0.10",
     "@types/node": "16.4.8",
     "aws-cdk": "1.116.0",
+    "aws-sdk": "2.958.0",
+    "dotenv-cli": "4.0.0",
+    "esbuild": "0.12.17",
     "husky": "7.0.1",
     "jest": "^26.4.2",
     "lint-staged": "11.1.1",
@@ -24,7 +33,10 @@
     "typescript": "~4.3.5"
   },
   "dependencies": {
+    "@aws-cdk/aws-cognito": "1.116.0",
+    "@aws-cdk/aws-lambda-nodejs": "1.116.0",
     "@aws-cdk/core": "1.116.0",
+    "crypto-secure-random-digit": "1.0.9",
     "source-map-support": "^0.5.16"
   },
   "prettier": {
