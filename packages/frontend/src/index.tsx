@@ -1,8 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Amplify from 'aws-amplify'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import authConfig from './cdk-exports.json'
+
+Amplify.configure({
+  Auth: {
+    region: process.env.AWS_REGION || 'us-east-2',
+    userPoolId: authConfig.PasswordlessLoginStack.userPoolId,
+    userPoolWebClientId: authConfig.PasswordlessLoginStack.clientId,
+  },
+})
 
 ReactDOM.render(
   <React.StrictMode>
