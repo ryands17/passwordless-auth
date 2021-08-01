@@ -16,13 +16,15 @@ type SignupResponse = {
 type CUser = CognitoUser & SignupResponse
 
 type AC = {
-  signOut: typeof Auth.signOut
+  loggedIn: boolean | null
   isAuthenticated: () => Promise<boolean>
   signIn: (args: { email: string }) => Promise<CUser | null>
   answerCustomChallenge: (answer: string) => Promise<boolean>
+  signOut: typeof Auth.signOut
 }
 
 const AuthContext = React.createContext<AC>({
+  loggedIn: null,
   isAuthenticated: () => Promise.resolve(false),
   signIn: () => Promise.resolve(null),
   answerCustomChallenge: () => Promise.resolve(true),
@@ -34,18 +36,23 @@ type AuthProviderProps = {
 }
 
 const AuthProvider = (props: AuthProviderProps) => {
+  const [loggedIn, setLoggedIn] = React.useState<AC['loggedIn']>(null)
   const [cognitoUser, setCognitoUser] = React.useState<CUser | null>(null)
 
-  const isAuthenticated = async () => {
+  const isAuthenticated = React.useCallback(async () => {
     try {
       await Auth.currentSession()
       return true
     } catch (error) {
       return false
     }
-  }
+  }, [])
 
-  const signIn = async ({ email }: { email: string }) => {
+  React.useEffect(() => {
+    isAuthenticated().then((res) => setLoggedIn(res))
+  }, [isAuthenticated])
+
+  const signIn = React.useCallback(async ({ email }: { email: string }) => {
     try {
       await Auth.signUp({
         username: email,
@@ -59,7 +66,7 @@ const AuthProvider = (props: AuthProviderProps) => {
     let cognitoUser = await Auth.signIn(email)
     setCognitoUser(cognitoUser)
     return cognitoUser
-  }
+  }, [])
 
   const answerCustomChallenge = async (answer: string) => {
     let updatedCognitoUser = await Auth.sendCustomChallengeAnswer(
@@ -67,18 +74,19 @@ const AuthProvider = (props: AuthProviderProps) => {
       answer
     )
     setCognitoUser(updatedCognitoUser)
+    setLoggedIn(true)
     return isAuthenticated()
   }
 
-  // const getPublicChallengeParameters = () => {
-  //   return cognitoUser?.ChallengeParameters
-  // }
-
-  const signOut = () => Auth.signOut()
+  const signOut = React.useCallback(async () => {
+    await Auth.signOut()
+    setLoggedIn(false)
+  }, [])
 
   return (
     <AuthContext.Provider
       value={{
+        loggedIn,
         isAuthenticated,
         signIn,
         answerCustomChallenge,

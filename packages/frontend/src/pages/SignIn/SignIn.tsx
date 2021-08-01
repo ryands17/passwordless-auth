@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { Card, Form, Input, Button, message } from 'antd'
-import styles from './SignIn.module.css'
+import { useHistory } from 'react-router-dom'
 import { useAuth } from 'config/auth'
+import { routes } from 'config/routes'
+import styles from './SignIn.module.css'
 
 const formItemLayout = {
   labelCol: {
@@ -31,6 +33,15 @@ const SignIn = () => {
   const [loading, setLoading] = React.useState(false)
   const [verificationCode, showVerificationCode] = React.useState(false)
   const { signIn, answerCustomChallenge } = useAuth()
+  const history = useHistory()
+  const isMounted = React.useRef(false)
+
+  React.useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
+    }
+  }, [])
 
   const onSubmit = async (values: any) => {
     try {
@@ -43,13 +54,13 @@ const SignIn = () => {
         )
         showVerificationCode(true)
       } else {
-        let res = await answerCustomChallenge(values.code)
-        console.log('res', res)
+        await answerCustomChallenge(values.code)
+        history.replace(routes.home.routePath())
       }
     } catch (e) {
       message.error(e.message, 4)
     } finally {
-      setLoading(false)
+      isMounted.current && setLoading(false)
     }
   }
 
