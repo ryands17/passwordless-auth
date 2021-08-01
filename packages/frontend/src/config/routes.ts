@@ -10,11 +10,11 @@ export type RouteItem = {
 }
 
 export const routes: Record<string, RouteItem> = {
-  login: {
-    path: '/login',
-    routePath: () => '/login',
+  signIn: {
+    path: '/signIn',
+    routePath: () => '/signIn',
     routeComponent: Route,
-    component: lazy(() => import('pages/Login/Login')),
+    component: lazy(() => import('pages/SignIn/SignIn')),
   },
 } as const
 

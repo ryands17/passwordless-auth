@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import { renderRoutes } from 'config/routes'
+import { AuthProvider } from 'config/auth'
 
 export const Routes: React.FC = () => {
   return (
@@ -23,7 +24,11 @@ export const Routes: React.FC = () => {
 }
 
 function App() {
-  return <Routes />
+  return (
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
+  )
 }
 
 export default App
