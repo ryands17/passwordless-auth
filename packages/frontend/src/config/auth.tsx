@@ -1,25 +1,26 @@
 import * as React from 'react'
 import { Auth } from 'aws-amplify'
-import { CognitoUser } from 'amazon-cognito-identity-js'
+// import { CognitoUser } from 'amazon-cognito-identity-js'
+import { requestMagicLink } from './api'
 
-type ChallengeParameters = {
-  USERNAME: string
-  email: string
-}
+// type ChallengeParameters = {
+//   USERNAME: string
+//   email: string
+// }
 
-type SignupResponse = {
-  challengeName: string
-  challengeParam: ChallengeParameters
-  Session: string
-}
+// type SignupResponse = {
+//   challengeName: string
+//   challengeParam: ChallengeParameters
+//   Session: string
+// }
 
-type CUser = CognitoUser & SignupResponse
+// type CUser = CognitoUser & SignupResponse
 
 type AC = {
   loggedIn: boolean | null
   isAuthenticated: () => Promise<boolean>
-  signIn: (args: { email: string }) => Promise<CUser | null>
-  answerCustomChallenge: (answer: string) => Promise<boolean>
+  signIn: (args: { email: string }) => Promise<any>
+  answerCustomChallenge: (email: string, answer: string) => Promise<boolean>
   signOut: typeof Auth.signOut
 }
 
@@ -37,7 +38,7 @@ type AuthProviderProps = {
 
 const AuthProvider = (props: AuthProviderProps) => {
   const [loggedIn, setLoggedIn] = React.useState<AC['loggedIn']>(null)
-  const [cognitoUser, setCognitoUser] = React.useState<CUser | null>(null)
+  // const [cognitoUser, setCognitoUser] = React.useState<CUser | null>(null)
 
   const isAuthenticated = React.useCallback(async () => {
     try {
@@ -63,17 +64,12 @@ const AuthProvider = (props: AuthProviderProps) => {
       // skip if user already exists
     }
 
-    let cognitoUser = await Auth.signIn(email)
-    setCognitoUser(cognitoUser)
-    return cognitoUser
+    return requestMagicLink(email)
   }, [])
 
-  const answerCustomChallenge = async (answer: string) => {
-    let updatedCognitoUser = await Auth.sendCustomChallengeAnswer(
-      cognitoUser,
-      answer
-    )
-    setCognitoUser(updatedCognitoUser)
+  const answerCustomChallenge = async (email: string, answer: string) => {
+    let cognitoUser = await Auth.signIn(email)
+    await Auth.sendCustomChallengeAnswer(cognitoUser, answer)
     setLoggedIn(true)
     return isAuthenticated()
   }

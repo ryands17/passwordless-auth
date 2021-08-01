@@ -24,7 +24,14 @@ export const routes: Record<string, RouteItem> = {
     routePath: () => '/signIn',
     routeComponent: PublicRoute,
     component: React.lazy(() => import('pages/SignIn/SignIn')),
-    exact: true,
+  },
+  verify: {
+    path: '/verify',
+    routePath: () => '/verify',
+    routeComponent: PublicRoute,
+    component: React.lazy(
+      () => import('pages/VerifyMagicLink/VerifyMagicLink')
+    ),
   },
 }
 

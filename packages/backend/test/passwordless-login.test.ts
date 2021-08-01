@@ -9,10 +9,13 @@ const synthStack = () => {
   return new PasswordlessLoginStack(app, 'PasswordlessLogin')
 }
 
+const OPTION_ENDPOINT = 1
+const ADDITIONAL_LAMBDAS = 2
+
 test('Cognito User pool and Lambda functions are created', () => {
   const assert = TemplateAssertions.fromStack(synthStack())
 
-  assert.resourceCountIs('AWS::Lambda::Function', 6)
+  assert.resourceCountIs('AWS::Lambda::Function', 5 + ADDITIONAL_LAMBDAS)
 
   assert.hasResourceProperties('AWS::Cognito::UserPool', {
     AccountRecoverySetting: {
@@ -44,6 +47,11 @@ test('Cognito User pool and Lambda functions are created', () => {
         Name: 'email',
         Required: true,
       },
+      {
+        AttributeDataType: 'String',
+        Mutable: true,
+        Name: 'authChallenge',
+      },
     ],
     SmsVerificationMessage:
       'The verification code to your new account is {####}',
@@ -68,6 +76,28 @@ test('Cognito User pool and Lambda functions are created', () => {
     ],
     ExplicitAuthFlows: ['ALLOW_CUSTOM_AUTH', 'ALLOW_REFRESH_TOKEN_AUTH'],
     SupportedIdentityProviders: ['COGNITO'],
+  })
+})
+
+test('API Gateway endpoint along with Lambda proxy integration is created', () => {
+  const assert = TemplateAssertions.fromStack(synthStack())
+
+  assert.hasResourceProperties('AWS::ApiGateway::RestApi', {
+    EndpointConfiguration: {
+      Types: ['REGIONAL'],
+    },
+    Name: 'authApi',
+  })
+
+  assert.resourceCountIs('AWS::ApiGateway::Method', 1 + OPTION_ENDPOINT)
+
+  assert.hasResourceProperties('AWS::ApiGateway::Method', {
+    HttpMethod: 'POST',
+    AuthorizationType: 'NONE',
+    Integration: {
+      IntegrationHttpMethod: 'POST',
+      Type: 'AWS_PROXY',
+    },
   })
 })
 

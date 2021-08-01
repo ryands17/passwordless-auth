@@ -226,6 +226,25 @@
     "@aws-cdk/cx-api" "1.116.0"
     constructs "^3.3.69"
 
+"@aws-cdk/aws-apigateway@1.116.0":
+  version "1.116.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigateway/-/aws-apigateway-1.116.0.tgz#d431a97617e78510558c4e9914416945867d1bf4"
+  integrity sha512-wwkP++j81JnkcG3BC158p0dhHn9WjngwVIMxATwIQooPC1RjDtcVVxtPXONi12+VoNoyQeIlYPYPd92ZebJUOA==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.116.0"
+    "@aws-cdk/aws-cloudwatch" "1.116.0"
+    "@aws-cdk/aws-cognito" "1.116.0"
+    "@aws-cdk/aws-ec2" "1.116.0"
+    "@aws-cdk/aws-elasticloadbalancingv2" "1.116.0"
+    "@aws-cdk/aws-iam" "1.116.0"
+    "@aws-cdk/aws-lambda" "1.116.0"
+    "@aws-cdk/aws-logs" "1.116.0"
+    "@aws-cdk/aws-s3" "1.116.0"
+    "@aws-cdk/aws-s3-assets" "1.116.0"
+    "@aws-cdk/core" "1.116.0"
+    "@aws-cdk/cx-api" "1.116.0"
+    constructs "^3.3.69"
+
 "@aws-cdk/aws-applicationautoscaling@1.116.0":
   version "1.116.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-applicationautoscaling/-/aws-applicationautoscaling-1.116.0.tgz#e3062a096629c9f30f69e2062cf2bd2739a73842"
@@ -363,6 +382,23 @@
     "@aws-cdk/cloud-assembly-schema" "1.116.0"
     "@aws-cdk/core" "1.116.0"
     "@aws-cdk/cx-api" "1.116.0"
+    constructs "^3.3.69"
+
+"@aws-cdk/aws-elasticloadbalancingv2@1.116.0":
+  version "1.116.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-elasticloadbalancingv2/-/aws-elasticloadbalancingv2-1.116.0.tgz#eeb5e2166e0f92edfbe5402ff3ca93fe957949e7"
+  integrity sha512-2OtxlSaWGI01GwCJ5WE9mPFa3oL7JrrcGhI68tQ78ObsOc6RPFS7XLI6xSKW42aEy+oByeKv3UaxcvwyUA6t0w==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.116.0"
+    "@aws-cdk/aws-cloudwatch" "1.116.0"
+    "@aws-cdk/aws-ec2" "1.116.0"
+    "@aws-cdk/aws-iam" "1.116.0"
+    "@aws-cdk/aws-lambda" "1.116.0"
+    "@aws-cdk/aws-s3" "1.116.0"
+    "@aws-cdk/cloud-assembly-schema" "1.116.0"
+    "@aws-cdk/core" "1.116.0"
+    "@aws-cdk/cx-api" "1.116.0"
+    "@aws-cdk/region-info" "1.116.0"
     constructs "^3.3.69"
 
 "@aws-cdk/aws-events@1.116.0":
