@@ -1,20 +1,6 @@
 import * as React from 'react'
 import { Auth } from 'aws-amplify'
-// import { CognitoUser } from 'amazon-cognito-identity-js'
 import { requestMagicLink } from './api'
-
-// type ChallengeParameters = {
-//   USERNAME: string
-//   email: string
-// }
-
-// type SignupResponse = {
-//   challengeName: string
-//   challengeParam: ChallengeParameters
-//   Session: string
-// }
-
-// type CUser = CognitoUser & SignupResponse
 
 type AC = {
   loggedIn: boolean | null
@@ -38,7 +24,6 @@ type AuthProviderProps = {
 
 const AuthProvider = (props: AuthProviderProps) => {
   const [loggedIn, setLoggedIn] = React.useState<AC['loggedIn']>(null)
-  // const [cognitoUser, setCognitoUser] = React.useState<CUser | null>(null)
 
   const isAuthenticated = React.useCallback(async () => {
     try {

@@ -33,10 +33,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify({
-        message: `A login link has been sent to ${email}`,
+        message: `A link has been sent to ${email}`,
       }),
     }
   } catch (e) {
+    console.error(e)
     return {
       statusCode: 400,
       headers: {
@@ -56,9 +57,9 @@ async function sendEmail(emailAddress: string, authChallenge: string) {
 
   const html = `
     <html><body>
-    <p>This is your login link:</p>
+    <p>Here's your link:</p>
     <h3>
-      <a target="_blank" rel="noopener noreferrer" href="${MAGIC_LINK}">Login Link</a>
+      <a target="_blank" rel="noopener noreferrer" href="${MAGIC_LINK}">Click to sign-in</a>
     </h3>
     </body></html>
   `.trim()
@@ -73,7 +74,7 @@ async function sendEmail(emailAddress: string, authChallenge: string) {
         },
         Text: {
           Charset: 'UTF-8',
-          Data: `Your login link (copy and paste in the browser): ${MAGIC_LINK}`,
+          Data: `Here's your link (copy and paste in the browser): ${MAGIC_LINK}`,
         },
       },
       Subject: {

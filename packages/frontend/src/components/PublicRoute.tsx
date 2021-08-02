@@ -18,11 +18,7 @@ export const PublicRoute = ({
         !loggedIn ? (
           children
         ) : (
-          <Redirect
-            // exact={true}
-            // from={location.pathname}
-            to={routes.home.routePath()}
-          />
+          <Redirect from={location.pathname} to={routes.home.routePath()} />
         )
       }
     />

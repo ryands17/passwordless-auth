@@ -18,11 +18,7 @@ export const PrivateRoute = ({
         loggedIn ? (
           children
         ) : (
-          <Redirect
-            exact={true}
-            from={location.pathname}
-            to={routes.signIn.routePath()}
-          />
+          <Redirect from={location.pathname} to={routes.signIn.routePath()} />
         )
       }
     />

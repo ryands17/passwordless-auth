@@ -33,6 +33,10 @@ export class PasswordlessLoginStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     })
 
+    ;(userPool.node.defaultChild as cg.CfnUserPool).emailConfiguration = {
+      sourceArn: `arn:aws:ses:us-east-1:${this.account}:identity/${process.env.SES_FROM_ADDRESS}`,
+    }
+
     postAuthentication.role?.attachInlinePolicy(
       new iam.Policy(this, 'allowConfirmingUser', {
         statements: [
@@ -55,18 +59,18 @@ export class PasswordlessLoginStack extends cdk.Stack {
       deployOptions: { stageName: 'dev' },
     })
 
-    const login = lambda(this, 'signUp')
+    const signIn = lambda(this, 'signIn')
       .addEnvironment('SES_FROM_ADDRESS', process.env.SES_FROM_ADDRESS)
       .addEnvironment('USER_POOL_ID', userPool.userPoolId)
 
-    login.addToRolePolicy(
+    signIn.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ['ses:SendEmail'],
         resources: ['*'],
       })
     )
-    login.addToRolePolicy(
+    signIn.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ['cognito-idp:AdminUpdateUserAttributes'],
@@ -74,8 +78,8 @@ export class PasswordlessLoginStack extends cdk.Stack {
       })
     )
 
-    const loginRoute = new apiGw.LambdaIntegration(login)
-    api.root.addMethod('POST', loginRoute)
+    const signInMethod = new apiGw.LambdaIntegration(signIn)
+    api.root.addMethod('POST', signInMethod)
 
     new cdk.CfnOutput(this, 'userPoolId', {
       value: userPool.userPoolId,

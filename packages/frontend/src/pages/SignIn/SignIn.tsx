@@ -37,7 +37,7 @@ const SignIn = () => {
       let response = await signIn(values)
       message.success(response.message, 5)
     } catch (e) {
-      message.error(e.message || e, 4)
+      message.error(e?.response?.data?.message || e?.message, 4)
     } finally {
       setLoading(false)
     }
@@ -51,7 +51,7 @@ const SignIn = () => {
           name="SignIn"
           {...formItemLayout}
           onFinish={onSubmit}
-          onFinishFailed={(e) => {
+          onFinishFailed={() => {
             message.error('Please check your email', 4)
           }}
         >

@@ -1,9 +1,9 @@
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import { renderRoutes } from 'config/routes'
 import { AuthProvider } from 'config/auth'
 
-export const Routes: React.FC = () => {
+const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>

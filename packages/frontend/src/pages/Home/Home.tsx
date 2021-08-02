@@ -13,7 +13,7 @@ const Home = () => {
     try {
       setLoading(true)
       await signOut()
-      history.push(routes.signIn.routePath())
+      history.replace(routes.signIn.routePath())
     } catch (e) {
       message.error(e.message)
     }
