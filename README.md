@@ -1,6 +1,6 @@
 # Passwordless Auth
 
-This stack allows a user to login directly via email without any need for a pasword. This uses Cognito for authentication along with Lambda triggers.
+This stack allows a user to login directly via email without any need for a pasword. This uses Cognito for authentication along with Lambda triggers. Here's the [blog post](https://dev.to/ryands17/magic-links-with-cognito-using-the-cdk-24a9) for the same.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
