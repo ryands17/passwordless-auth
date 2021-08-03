@@ -33,10 +33,6 @@ export class PasswordlessLoginStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     })
 
-    ;(userPool.node.defaultChild as cg.CfnUserPool).emailConfiguration = {
-      sourceArn: `arn:aws:ses:us-east-1:${this.account}:identity/${process.env.SES_FROM_ADDRESS}`,
-    }
-
     postAuthentication.role?.attachInlinePolicy(
       new iam.Policy(this, 'allowConfirmingUser', {
         statements: [
